@@ -12,7 +12,7 @@ env:
   global:
     - ANDROID_TARGET=android-19 
     - ANDROID_SDK_VERSION="r22.6.2"
-    -  ANDROID_ABI=armeabi-v7a
+    - ANDROID_ABI=armeabi-v7a
 
 before_install:
   # Install base Android SDK
@@ -51,7 +51,7 @@ before_install:
   - export TERM=dumb
 
   # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET 
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET -b $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
 
 
