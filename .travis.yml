@@ -1,0 +1,73 @@
+language: java
+
+jdk: 
+  - openjdk7
+  - openjdk6
+  - oraclejdk7
+  - oraclejdk8
+
+branches:  
+ only:
+    - dev
+    - master
+
+env:
+  global:
+    - ANDROID_SDK_VERSION="r22.6.2"
+    - ANDROID_TARGET=android-19  
+    - ANDROID_ABI=armeabi-v7a
+
+before_install:
+  # Install base Android SDK
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get update; fi
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+  
+   # newer version of gradle
+  - wget http://services.gradle.org/distributions/gradle-1.11-bin.zip
+  - unzip -qq gradle-1.11-bin.zip
+  - export GRADLE_HOME=$PWD/gradle-1.11
+  - export PATH=$GRADLE_HOME/bin:$PATH
+
+  # just to test gradle version, against our provided one
+  - gradle -v
+
+    # newest android SDK
+  - wget http://dl.google.com/android/android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+  - tar -zxf android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+  - export ANDROID_HOME=`pwd`/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+   # manually set sdk.dir variable, according to local paths
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+    # Install required components.
+  # For a full list, run `android list sdk -a --extended`
+  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
+  - echo yes | android update sdk --all --filter build-tools-19.0.3 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-google-m2repository --no-ui --force > /dev/null
+
+  # for gradle output style
+  - export TERM=dumb
+
+  # Create and start emulator
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+
+
+before_script:
+  - adb wait-for-device
+  - adb shell input keyevent 82 &
+
+script:
+  - sudo chmod +x gradlew
+  - ./gradlew connectedCheck
+
+
+
+
+
+
