@@ -28,4 +28,5 @@ before_script:
 script: ./gradlew connectedAndroidTest
 
 after_success:
+   - chmod a+x ./CI/upload.sh
    - "./CI/upload.sh"
