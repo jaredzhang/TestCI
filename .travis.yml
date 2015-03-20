@@ -27,5 +27,5 @@ before_script:
 
 script: ./gradlew connectedAndroidTest
 
-after_success
-   -"./CI/upload.sh"
+after_success:
+   - "./CI/upload.sh"
