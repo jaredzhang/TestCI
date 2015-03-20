@@ -8,10 +8,11 @@ env:
   matrix:
     - ANDROID_TARGET=android-21  ANDROID_ABI=armeabi-v7a
   global:
-  - REPO_SLUG="2359media/voiceover"
+  - REPO_SLUG="jaredzhang/TestCI"
   - PRODUCT_NAME="VoicePing"
   - PROJECT_NAME="VoicePing"
   - APP_MANAGER_API_TOKEN="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MTYsImFwaV9rZXkiOiIyMTQ0MTI5Ni0zNTQyLTQ2NmYtYWQ1Yy00OWVmYmRmNjgxZDQifQ.RPGzB2TQbheRVXqOJha_48kERq1NwDHhoOIoSmnYf_g"
+  - APP_ID="261"
 
 android:
   components:
