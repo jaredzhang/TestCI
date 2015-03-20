@@ -15,7 +15,6 @@ if [ "$TRAVIS_REPO_SLUG" != "$REPO_SLUG" ]; then
   echo "It's not the main repo. No deployment."
 fi
 
-
 OUTPUTDIR="$PWD/app/build/outputs/apk"
 
 VERSION="#$TRAVIS_BUILD_NUMBER"
